@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coraza Seguridad - Gestión de Dotación e Inventario</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <h2>Formulario de Asociado</h2>
+  <form id="form-asociado" onsubmit="saveAssociate(event)">
+    <input type="text" id="new-nombre" placeholder="Nombre" required>
+    <input type="text" id="new-cedula" placeholder="Cédula" required>
+    <input type="date" id="new-fecha-ingreso" placeholder="Fecha de Ingreso">
+    <button type="submit">Guardar</button>
+  </form>
+
+  <hr>
+
+  <h2>Lista de Asociados
+    
+  </h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Cédula</th>
+        <th>Fecha de Ingreso</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-asociados">
+      <!-- Aquí se insertarán los asociados automáticamente -->
+    </tbody>
+  </table>
+
+  <script src="main.js"></script>
+</body>
+</html>
