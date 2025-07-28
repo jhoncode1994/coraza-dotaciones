@@ -36,15 +36,7 @@ function validarCampos() {
   } else if (!fechaIngreso) {
     valido = false;
     mensaje = "La fecha de ingreso es obligatoria.";
-  } else {
-    const hoy = new Date();
-    hoy.setHours(0,0,0,0);
-    const fecha = new Date(fechaIngreso);
-    if (fecha < hoy) {
-      valido = false;
-      mensaje = "La fecha de ingreso debe ser hoy o una fecha futura.";
-    }
-  }
+  } 
 
   if (btnGuardar) btnGuardar.disabled = !valido;
   mostrarMensajeForm(mensaje, valido ? "ok" : "error");
