@@ -5,22 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Coraza Seguridad - Gestión de Dotación e Inventario</title>
   <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script> <!-- Se movió aquí con defer -->
 </head>
 <body>
 
   <h2>Formulario de Asociado</h2>
-  <form id="form-asociado" onsubmit="saveAssociate(event)">
+  <form id="form-asociado">
     <input type="text" id="new-nombre" placeholder="Nombre" required>
     <input type="text" id="new-cedula" placeholder="Cédula" required>
     <input type="date" id="new-fecha-ingreso" placeholder="Fecha de Ingreso">
-    <button type="submit">Guardar</button>
+    <button type="submit" id="btn-guardar">Guardar</button>
   </form>
 
   <hr>
 
-  <h2>Lista de Asociados
-    
-  </h2>
+  <h2>Lista de Asociados</h2>
   <table>
     <thead>
       <tr>
@@ -35,6 +34,5 @@
     </tbody>
   </table>
 
-  <script src="main.js"></script>
 </body>
 </html>

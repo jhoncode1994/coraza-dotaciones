@@ -1,3 +1,4 @@
+const API_BASE_URL = "https://coraza-api.onrender.com";
 
 function mostrarMensajeForm(msg, tipo = "error") {
   let div = document.getElementById("form-mensaje");
@@ -36,14 +37,13 @@ function validarCampos() {
   } else if (!fechaIngreso) {
     valido = false;
     mensaje = "La fecha de ingreso es obligatoria.";
-  } 
+  }
 
   if (btnGuardar) btnGuardar.disabled = !valido;
   mostrarMensajeForm(mensaje, valido ? "ok" : "error");
   return valido;
 }
 
-// Validar en tiempo real
 function agregarListenersValidacion() {
   ["new-nombre", "new-cedula", "new-fecha-ingreso"].forEach(id => {
     const el = document.getElementById(id);
@@ -53,11 +53,10 @@ function agregarListenersValidacion() {
   });
 }
 
-// Forzar solo números en cédula
 function soloNumerosCedula() {
   const cedulaInput = document.getElementById("new-cedula");
   if (cedulaInput) {
-    cedulaInput.addEventListener("input", function(e) {
+    cedulaInput.addEventListener("input", function () {
       this.value = this.value.replace(/[^0-9]/g, "");
     });
   }
@@ -84,8 +83,8 @@ async function saveAssociate(e) {
 
   try {
     const url = modoEdicion
-      ? `http://localhost:3000/api/asociados/${cedulaOriginal}`
-      : "http://localhost:3000/api/asociados";
+      ? `${API_BASE_URL}/api/asociados/${cedulaOriginal}`
+      : `${API_BASE_URL}/api/asociados`;
 
     const method = modoEdicion ? "PUT" : "POST";
 
@@ -110,7 +109,7 @@ async function saveAssociate(e) {
     cedulaOriginal = null;
 
     cargarAsociados();
-    validarCampos(); // Para deshabilitar el botón tras limpiar
+    validarCampos();
     setTimeout(limpiarMensajeForm, 2000);
   } catch (error) {
     console.error("Error al guardar asociado:", error);
@@ -118,11 +117,9 @@ async function saveAssociate(e) {
   }
 }
 
-
-// Mostrar todos los asociados al cargar
 async function cargarAsociados() {
   try {
-    const response = await fetch("http://localhost:3000/api/asociados");
+    const response = await fetch(`${API_BASE_URL}/api/asociados`);
     if (!response.ok) throw new Error("Error al obtener asociados");
     const asociados = await response.json();
 
@@ -130,30 +127,49 @@ async function cargarAsociados() {
     tabla.innerHTML = "";
 
     asociados.forEach(asociado => {
-  const fila = document.createElement("tr");
-  fila.innerHTML = `
-    <td>${asociado.nombre}</td>
-    <td>${asociado.cedula}</td>
-    <td>${asociado.fecha_ingreso ? asociado.fecha_ingreso.split("T")[0] : ""}</td>
-    <td>
-      <button onclick="editarAsociado('${asociado.cedula}')">✏️</button>
-      <button onclick="eliminarAsociado('${asociado.cedula}')">🗑️</button>
-    </td>
-  `;
-  tabla.appendChild(fila);
-});
+      const fila = document.createElement("tr");
+      fila.innerHTML = `
+        <td>${asociado.nombre}</td>
+        <td>${asociado.cedula}</td>
+        <td>${asociado.fecha_ingreso ? asociado.fecha_ingreso.split("T")[0] : ""}</td>
+        <td>
+          <button onclick="editarAsociado('${asociado.cedula}')">✏️</button>
+          <button onclick="eliminarAsociado('${asociado.cedula}')">🗑️</button>
+        </td>
+      `;
+      tabla.appendChild(fila);
+    });
 
   } catch (error) {
     console.error("Error al cargar asociados:", error);
   }
 }
 
+async function eliminarAsociado(cedula) {
+  if (!confirm("¿Estás seguro de eliminar este asociado?")) return;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/asociados/${cedula}`, {
+      method: "DELETE"
+    });
+
+    if (!response.ok) throw new Error("Error al eliminar");
+
+    mostrarMensajeForm("Asociado eliminado correctamente", "ok");
+    cargarAsociados();
+    setTimeout(limpiarMensajeForm, 2000);
+  } catch (error) {
+    console.error("Error al eliminar asociado:", error);
+    mostrarMensajeForm("Hubo un error al eliminar");
+  }
+}
 
 window.addEventListener("DOMContentLoaded", () => {
   cargarAsociados();
   agregarListenersValidacion();
   soloNumerosCedula();
   validarCampos();
+  document.getElementById("form-asociado").addEventListener("submit", saveAssociate);
 });
 
 let modoEdicion = false;
@@ -167,24 +183,5 @@ function editarAsociado(cedula) {
     document.getElementById("new-fecha-ingreso").value = fila.cells[2].textContent;
     modoEdicion = true;
     cedulaOriginal = cedula;
-  }
-}
-
-async function eliminarAsociado(cedula) {
-  if (!confirm("¿Estás seguro de eliminar este asociado?")) return;
-
-  try {
-    const response = await fetch(`http://localhost:3000/api/asociados/${cedula}`, {
-      method: "DELETE"
-    });
-
-    if (!response.ok) throw new Error("Error al eliminar");
-
-    mostrarMensajeForm("Asociado eliminado correctamente", "ok");
-    cargarAsociados();
-    setTimeout(limpiarMensajeForm, 2000);
-  } catch (error) {
-    console.error("Error al eliminar asociado:", error);
-    mostrarMensajeForm("Hubo un error al eliminar");
   }
 }

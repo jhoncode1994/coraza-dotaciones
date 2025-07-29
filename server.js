@@ -1,9 +1,11 @@
+require('dotenv').config(); // 👈 Cargar variables del archivo .env
+
 const express = require('express');
 const cors = require('cors');
 const db = require('./db');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // ✅ Compatible con Render o local
 
 app.use(cors());
 app.use(express.json());
@@ -14,7 +16,6 @@ app.get('/', (req, res) => {
 });
 
 // ---------------- ASOCIADOS ---------------- //
-
 
 // Obtener todos los asociados (ordenados por nombre)
 app.get('/api/asociados', async (req, res) => {
@@ -78,5 +79,5 @@ app.delete('/api/asociados/:cedula', async (req, res) => {
 // ------------------------------------------ //
 
 app.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+  console.log(`Servidor escuchando en puerto ${PORT}`);
 });
