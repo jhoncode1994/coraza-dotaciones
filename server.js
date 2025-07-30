@@ -17,10 +17,10 @@ app.get('/', (req, res) => {
 
 // ---------------- ASOCIADOS ---------------- //
 
-// Obtener todos los asociados (ordenados por nombre)
+// Obtener todos los asociados (ordenados por apellidos y nombres)
 app.get('/api/asociados', async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM asociados ORDER BY nombre');
+    const result = await db.query('SELECT * FROM asociados ORDER BY apellidos, nombres');
     res.json(result.rows);
   } catch (error) {
     console.error('❌ Error al obtener asociados:', error);
@@ -30,14 +30,14 @@ app.get('/api/asociados', async (req, res) => {
 
 // Crear nuevo asociado
 app.post('/api/asociados', async (req, res) => {
-  const { cedula, nombre, fecha_ingreso } = req.body;
+  const { cedula, nombres, apellidos, fecha_ingreso } = req.body;
 
   console.log('📥 Datos recibidos en POST /api/asociados:', req.body);
 
   try {
     await db.query(
-      'INSERT INTO asociados (cedula, nombre, fecha_ingreso) VALUES ($1, $2, $3)',
-      [cedula, nombre, fecha_ingreso || null]
+      'INSERT INTO asociados (cedula, nombres, apellidos, fecha_ingreso) VALUES ($1, $2, $3, $4)',
+      [cedula, nombres, apellidos, fecha_ingreso || null]
     );
     res.status(201).json({ mensaje: 'Asociado creado correctamente' });
   } catch (error) {
@@ -49,12 +49,12 @@ app.post('/api/asociados', async (req, res) => {
 // Editar asociado existente
 app.put('/api/asociados/:cedula', async (req, res) => {
   const { cedula } = req.params;
-  const { nombre, fecha_ingreso } = req.body;
+  const { nombres, apellidos, fecha_ingreso } = req.body;
 
   try {
     await db.query(
-      'UPDATE asociados SET nombre = $1, fecha_ingreso = $2 WHERE cedula = $3',
-      [nombre, fecha_ingreso || null, cedula]
+      'UPDATE asociados SET nombres = $1, apellidos = $2, fecha_ingreso = $3 WHERE cedula = $4',
+      [nombres, apellidos, fecha_ingreso || null, cedula]
     );
     res.json({ mensaje: 'Asociado actualizado correctamente' });
   } catch (error) {
