@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestión de Asociados - Coraza</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión Coraza</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <h1>Gestión de Asociados</h1>
 
   <form id="asociado-form">
-    <input type="text" id="cedula" placeholder="Cédula" required>
-    <input type="text" id="nombres" placeholder="Nombres" required>
-    <input type="text" id="apellidos" placeholder="Apellidos" required>
-    <input type="date" id="fecha_ingreso" placeholder="Fecha de ingreso">
-    <button type="submit">💾 Guardar Asociado</button>
+    <input type="text" id="cedula" placeholder="Cédula" required />
+    <input type="text" id="nombres" placeholder="Nombres" required />
+    <input type="text" id="apellidos" placeholder="Apellidos" required />
+    <input type="date" id="fecha_ingreso" placeholder="Fecha de ingreso" />
+    <button type="submit">Guardar Asociado</button>
   </form>
 
   <h2>Lista de Asociados</h2>
   <ul id="lista-asociados"></ul>
+
+  <hr/>
+
+  <h1>Gestión de Inventario</h1>
+
+  <form id="inventario-form">
+    <input type="text" id="nombre" placeholder="Nombre del producto" required />
+    <input type="text" id="descripcion" placeholder="Descripción" />
+    <input type="number" id="cantidad" placeholder="Cantidad" required min="0" />
+    <input type="text" id="ubicacion" placeholder="Ubicación" />
+    <button type="submit">Guardar Producto</button>
+  </form>
+
+  <h2>Lista de Inventario</h2>
+  <ul id="lista-inventario"></ul>
 
   <script src="main.js"></script>
 </body>

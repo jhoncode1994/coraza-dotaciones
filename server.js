@@ -15,7 +15,6 @@ app.get('/', (req, res) => {
   res.send('Servidor Coraza funcionando');
 });
 
-
 // ---------------- ASOCIADOS ---------------- //
 
 // Obtener todos los asociados
@@ -75,7 +74,6 @@ app.delete('/api/asociados/:cedula', async (req, res) => {
   }
 });
 
-
 // ---------------- INVENTARIO ---------------- //
 
 // Obtener todo el inventario
@@ -89,7 +87,7 @@ app.get('/api/inventario', async (req, res) => {
   }
 });
 
-// Crear nuevo elemento de inventario
+// Crear nuevo ítem de inventario
 app.post('/api/inventario', async (req, res) => {
   const { nombre, descripcion, cantidad, categoria } = req.body;
 
@@ -105,7 +103,7 @@ app.post('/api/inventario', async (req, res) => {
   }
 });
 
-// Actualizar ítem de inventario
+// Editar ítem de inventario
 app.put('/api/inventario/:id', async (req, res) => {
   const { id } = req.params;
   const { nombre, descripcion, cantidad, categoria } = req.body;
@@ -134,7 +132,6 @@ app.delete('/api/inventario/:id', async (req, res) => {
     res.status(500).json({ error: 'Error al eliminar ítem' });
   }
 });
-
 
 // ------------------------------------------ //
 
