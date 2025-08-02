@@ -11,14 +11,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Formulario Asociados
   document.getElementById('asociado-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const asociado = {
-      cedula: document.getElementById('cedula').value.trim(),
-      nombres: document.getElementById('nombres').value.trim(),
-      apellidos: document.getElementById('apellidos').value.trim(),
-      fecha_ingreso: document.getElementById('fecha_ingreso').value || null
-    };
-    const metodo = asociadosGlobal.some(a => a.cedula === asociado.cedula) ? 'PUT' : 'POST';
-    const url = metodo === 'PUT' ? `${apiAsociados}/${asociado.cedula}` : apiAsociados;
+
+    const cedula = document.getElementById('cedula').value.trim();
+    const nombres = document.getElementById('nombres').value.trim();
+    const apellidos = document.getElementById('apellidos').value.trim();
+    const fecha_ingreso = document.getElementById('fecha_ingreso').value || null;
+
+    if (!cedula || isNaN(cedula)) {
+      alert('Cédula inválida');
+      return;
+    }
+    if (!nombres || !apellidos) {
+      alert('Nombres y apellidos son obligatorios');
+      return;
+    }
+
+    const asociado = { cedula, nombres, apellidos, fecha_ingreso };
+    const metodo = asociadosGlobal.some(a => a.cedula === cedula) ? 'PUT' : 'POST';
+    const url = metodo === 'PUT' ? `${apiAsociados}/${cedula}` : apiAsociados;
+
     try {
       const response = await fetch(url, {
         method: metodo,
@@ -36,14 +47,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Formulario Inventario
   document.getElementById('inventario-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const inventario = {
-      id: document.getElementById('inv-id').value || null,
-      tipo: document.getElementById('inv-tipo').value.trim(),
-      descripcion: document.getElementById('inv-descripcion').value.trim(),
-      estado: document.getElementById('inv-estado').value.trim()
-    };
-    const metodo = inventario.id ? 'PUT' : 'POST';
-    const url = metodo === 'PUT' ? `${apiInventario}/${inventario.id}` : apiInventario;
+
+    const tipo = document.getElementById('inv-tipo').value.trim();
+    const descripcion = document.getElementById('inv-descripcion').value.trim();
+    const estado = document.getElementById('inv-estado').value.trim();
+    const id = document.getElementById('inv-id').value || null;
+
+    if (!tipo || !descripcion || !estado) {
+      alert('Todos los campos de inventario son obligatorios');
+      return;
+    }
+
+    const inventario = { id, tipo, descripcion, estado };
+    const metodo = id ? 'PUT' : 'POST';
+    const url = metodo === 'PUT' ? `${apiInventario}/${id}` : apiInventario;
+
     try {
       const response = await fetch(url, {
         method: metodo,
