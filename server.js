@@ -5,7 +5,7 @@ const cors = require('cors');
 const db = require('./db');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // ✅ Compatible con Render o local
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -15,9 +15,10 @@ app.get('/', (req, res) => {
   res.send('Servidor Coraza funcionando');
 });
 
+
 // ---------------- ASOCIADOS ---------------- //
 
-// Obtener todos los asociados (ordenados por apellidos y nombres)
+// Obtener todos los asociados
 app.get('/api/asociados', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM asociados ORDER BY apellidos, nombres');
@@ -32,8 +33,6 @@ app.get('/api/asociados', async (req, res) => {
 app.post('/api/asociados', async (req, res) => {
   const { cedula, nombres, apellidos, fecha_ingreso } = req.body;
 
-  console.log('📥 Datos recibidos en POST /api/asociados:', req.body);
-
   try {
     await db.query(
       'INSERT INTO asociados (cedula, nombres, apellidos, fecha_ingreso) VALUES ($1, $2, $3, $4)',
@@ -46,7 +45,7 @@ app.post('/api/asociados', async (req, res) => {
   }
 });
 
-// Editar asociado existente
+// Editar asociado
 app.put('/api/asociados/:cedula', async (req, res) => {
   const { cedula } = req.params;
   const { nombres, apellidos, fecha_ingreso } = req.body;
@@ -76,61 +75,66 @@ app.delete('/api/asociados/:cedula', async (req, res) => {
   }
 });
 
+
 // ---------------- INVENTARIO ---------------- //
 
 // Obtener todo el inventario
 app.get('/api/inventario', async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM inventario ORDER BY id');
+    const result = await db.query('SELECT * FROM inventario ORDER BY id DESC');
     res.json(result.rows);
-  } catch (err) {
-    console.error('❌ Error al obtener inventario:', err);
-    res.status(500).json({ error: 'Error del servidor' });
+  } catch (error) {
+    console.error('❌ Error al obtener inventario:', error);
+    res.status(500).json({ error: 'Error al obtener inventario' });
   }
 });
 
-// Agregar nuevo ítem al inventario
+// Crear nuevo elemento de inventario
 app.post('/api/inventario', async (req, res) => {
-  const { nombre, descripcion, cantidad, fecha_ingreso } = req.body;
+  const { nombre, descripcion, cantidad, categoria } = req.body;
+
   try {
-    const result = await db.query(
-      'INSERT INTO inventario (nombre, descripcion, cantidad, fecha_ingreso) VALUES ($1, $2, $3, $4) RETURNING *',
-      [nombre, descripcion, cantidad, fecha_ingreso || null]
+    await db.query(
+      'INSERT INTO inventario (nombre, descripcion, cantidad, categoria) VALUES ($1, $2, $3, $4)',
+      [nombre, descripcion || null, cantidad || 0, categoria || null]
     );
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    console.error('❌ Error al agregar inventario:', err);
-    res.status(500).json({ error: 'Error del servidor' });
+    res.status(201).json({ mensaje: 'Ítem de inventario creado correctamente' });
+  } catch (error) {
+    console.error('❌ Error al crear ítem:', error);
+    res.status(500).json({ error: 'Error al crear ítem' });
   }
 });
 
-// Editar ítem de inventario
+// Actualizar ítem de inventario
 app.put('/api/inventario/:id', async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion, cantidad, fecha_ingreso } = req.body;
+  const { nombre, descripcion, cantidad, categoria } = req.body;
+
   try {
-    const result = await db.query(
-      'UPDATE inventario SET nombre=$1, descripcion=$2, cantidad=$3, fecha_ingreso=$4 WHERE id=$5 RETURNING *',
-      [nombre, descripcion, cantidad, fecha_ingreso || null, id]
+    await db.query(
+      'UPDATE inventario SET nombre = $1, descripcion = $2, cantidad = $3, categoria = $4 WHERE id = $5',
+      [nombre, descripcion || null, cantidad || 0, categoria || null, id]
     );
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error('❌ Error al actualizar inventario:', err);
-    res.status(500).json({ error: 'Error del servidor' });
+    res.json({ mensaje: 'Ítem actualizado correctamente' });
+  } catch (error) {
+    console.error('❌ Error al actualizar ítem:', error);
+    res.status(500).json({ error: 'Error al actualizar ítem' });
   }
 });
 
 // Eliminar ítem del inventario
 app.delete('/api/inventario/:id', async (req, res) => {
   const { id } = req.params;
+
   try {
     await db.query('DELETE FROM inventario WHERE id = $1', [id]);
-    res.sendStatus(204);
-  } catch (err) {
-    console.error('❌ Error al eliminar inventario:', err);
-    res.status(500).json({ error: 'Error del servidor' });
+    res.json({ mensaje: 'Ítem eliminado correctamente' });
+  } catch (error) {
+    console.error('❌ Error al eliminar ítem:', error);
+    res.status(500).json({ error: 'Error al eliminar ítem' });
   }
 });
+
 
 // ------------------------------------------ //
 
