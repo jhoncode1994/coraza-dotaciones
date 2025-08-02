@@ -1,44 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coraza Seguridad - Gestión de Dotación e Inventario</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="main.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Asociados - Coraza</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <h1>Gestión de Asociados</h1>
 
-  <h2>Formulario de Asociado</h2>
-  <form id="form-asociado">
-    <input type="text" id="new-cedula" placeholder="Cédula" required>
-    <input type="text" id="new-nombres" placeholder="Nombres" required>
-    <input type="text" id="new-apellidos" placeholder="Apellidos" required>
-    <input type="text" id="new-cargo" placeholder="Cargo">
-    <input type="text" id="new-grupo" placeholder="Grupo">
-    <input type="date" id="new-fecha-ingreso" placeholder="Fecha de Ingreso">
-    <button type="submit" id="btn-guardar">Guardar</button>
+  <form id="asociado-form">
+    <input type="text" id="cedula" placeholder="Cédula" required>
+    <input type="text" id="nombres" placeholder="Nombres" required>
+    <input type="text" id="apellidos" placeholder="Apellidos" required>
+    <input type="date" id="fecha_ingreso" placeholder="Fecha de ingreso">
+    <button type="submit">Guardar Asociado</button>
   </form>
 
-  <hr>
-
   <h2>Lista de Asociados</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Cédula</th>
-        <th>Nombres</th>
-        <th>Apellidos</th>
-        <th>Cargo</th>
-        <th>Grupo</th>
-        <th>Fecha de Ingreso</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody id="tabla-asociados">
-      <!-- Aquí se insertarán los asociados automáticamente -->
-    </tbody>
-  </table>
+  <ul id="lista-asociados"></ul>
 
+  <script src="main.js"></script>
 </body>
 </html>

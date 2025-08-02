@@ -76,6 +76,62 @@ app.delete('/api/asociados/:cedula', async (req, res) => {
   }
 });
 
+// ---------------- INVENTARIO ---------------- //
+
+// Obtener todo el inventario
+app.get('/api/inventario', async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM inventario ORDER BY id');
+    res.json(result.rows);
+  } catch (err) {
+    console.error('❌ Error al obtener inventario:', err);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+});
+
+// Agregar nuevo ítem al inventario
+app.post('/api/inventario', async (req, res) => {
+  const { nombre, descripcion, cantidad, fecha_ingreso } = req.body;
+  try {
+    const result = await db.query(
+      'INSERT INTO inventario (nombre, descripcion, cantidad, fecha_ingreso) VALUES ($1, $2, $3, $4) RETURNING *',
+      [nombre, descripcion, cantidad, fecha_ingreso || null]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('❌ Error al agregar inventario:', err);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+});
+
+// Editar ítem de inventario
+app.put('/api/inventario/:id', async (req, res) => {
+  const { id } = req.params;
+  const { nombre, descripcion, cantidad, fecha_ingreso } = req.body;
+  try {
+    const result = await db.query(
+      'UPDATE inventario SET nombre=$1, descripcion=$2, cantidad=$3, fecha_ingreso=$4 WHERE id=$5 RETURNING *',
+      [nombre, descripcion, cantidad, fecha_ingreso || null, id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('❌ Error al actualizar inventario:', err);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+});
+
+// Eliminar ítem del inventario
+app.delete('/api/inventario/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.query('DELETE FROM inventario WHERE id = $1', [id]);
+    res.sendStatus(204);
+  } catch (err) {
+    console.error('❌ Error al eliminar inventario:', err);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
+});
+
 // ------------------------------------------ //
 
 app.listen(PORT, () => {
