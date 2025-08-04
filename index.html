@@ -3,77 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Coraza Seguridad C.T.A.</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Sistema de Dotación - Coraza</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Gestión de Dotación - CORAZA</h1>
+  <header>
+    <h1>Gestión de Dotación - CORAZA</h1>
+    <nav>
+      <button onclick="mostrarSeccion('asociados')">Asociados</button>
+      <button onclick="mostrarSeccion('inventario')">Inventario</button>
+      <button onclick="mostrarSeccion('ingreso-dotacion')">Ingreso de Dotación</button>
+    </nav>
+  </header>
 
-  <nav>
-    <button onclick="mostrarSeccion('asociados')">Asociados</button>
-    <button onclick="mostrarSeccion('inventario')">Inventario</button>
-    <button onclick="mostrarSeccion('ingreso-dotacion')">Ingreso de Dotación</button>
-  </nav>
+  <main>
+    <!-- Asociados -->
+    <section id="asociados" class="seccion">
+      <h2>Gestión de Asociados</h2>
+      <form id="formAsociado">
+        <input type="text" id="cedula" placeholder="Cédula" required />
+        <input type="text" id="nombre" placeholder="Nombre completo" required />
+        <button type="submit">Guardar Asociado</button>
+      </form>
+      <div id="listaAsociados"></div>
+    </section>
 
-  <!-- ASOCIADOS -->
-  <section id="asociados" class="seccion">
-    <h2>Registrar Asociado</h2>
-    <form id="form-asociado">
-      <label>Cédula: <input type="text" name="cedula" required></label>
-      <label>Nombre: <input type="text" name="nombre" required></label>
-      <label>Apellido: <input type="text" name="apellido" required></label>
-      <label>Rol: <input type="text" name="rol" required></label>
-      <button type="submit">Guardar Asociado</button>
-    </form>
+    <!-- Inventario -->
+    <section id="inventario" class="seccion" style="display: none;">
+      <h2>Inventario Actual</h2>
+      <div id="tablaInventario"></div>
+    </section>
 
-    <h3>Lista de Asociados</h3>
-    <table id="tabla-asociados">
-      <thead>
-        <tr>
-          <th>Cédula</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Rol</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
-
-  <!-- INVENTARIO -->
-  <section id="inventario" class="seccion" style="display: none;">
-    <h2>Inventario</h2>
-    <table id="tabla-inventario">
-      <thead>
-        <tr>
-          <th>Elemento</th>
-          <th>Cantidad</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
-
-  <!-- INGRESO DE DOTACIÓN -->
-  <section id="ingreso-dotacion" class="seccion" style="display: none;">
-    <h2>Ingreso de Dotación a Bodega</h2>
-    <form id="form-dotacion">
-      <div class="grid">
-        <label>Kepis: <input type="number" name="kepis" min="0" value="0"></label>
-        <label>Goleana: <input type="number" name="goleana" min="0" value="0"></label>
-        <label>Pantalón: <input type="number" name="pantalon" min="0" value="0"></label>
-        <label>Overol: <input type="number" name="overol" min="0" value="0"></label>
-        <label>Camisa: <input type="number" name="camisa" min="0" value="0"></label>
-        <label>Botas: <input type="number" name="botas" min="0" value="0"></label>
-        <label>Corbata: <input type="number" name="corbata" min="0" value="0"></label>
-        <label>Moña: <input type="number" name="moña" min="0" value="0"></label>
-        <label>Riata: <input type="number" name="riata" min="0" value="0"></label>
-        <label>Botas pantanera: <input type="number" name="botas_pantanera" min="0" value="0"></label>
-      </div>
-      <button type="submit">Registrar Ingreso</button>
-    </form>
-  </section>
+    <!-- Ingreso de Dotación -->
+    <section id="ingreso-dotacion" class="seccion" style="display: none;">
+      <h2>Ingreso de Dotación a Bodega</h2>
+      <form id="formIngresoDotacion">
+        <div class="grid">
+          <input type="number" name="kepis" placeholder="Kepis" />
+          <input type="number" name="goleana" placeholder="Goleana" />
+          <input type="number" name="pantalon" placeholder="Pantalón" />
+          <input type="number" name="overol" placeholder="Overol" />
+          <input type="number" name="camisa" placeholder="Camisa" />
+          <input type="number" name="botas" placeholder="Botas" />
+          <input type="number" name="corbata" placeholder="Corbata" />
+          <input type="number" name="moña" placeholder="Moña" />
+          <input type="number" name="riata" placeholder="Riata" />
+          <input type="number" name="botas_pantanera" placeholder="Botas pantanera" />
+        </div>
+        <button type="submit">Guardar Dotación</button>
+      </form>
+    </section>
+  </main>
 
   <script src="main.js"></script>
 </body>
