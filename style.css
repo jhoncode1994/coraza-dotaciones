@@ -1,94 +1,80 @@
-/* RESET BÁSICO */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #f0f4f8;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0 20px;
+  background-color: #f5f9ff;
   color: #333;
-  padding: 20px;
-  line-height: 1.6;
 }
 
 h1, h2 {
-  color: #004080;
-  margin-bottom: 10px;
+  color: #003366;
 }
 
-hr {
-  margin: 30px 0;
-  border: 1px solid #ccc;
-}
-
-section {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.05);
-  margin-bottom: 20px;
-}
-
-/* FORMULARIOS */
 form {
-  margin-top: 10px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 input, select, button {
-  padding: 10px;
-  margin-top: 8px;
+  padding: 8px;
+  margin: 5px;
+  border-radius: 4px;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  width: 100%;
-}
-
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+  font-size: 14px;
 }
 
 button {
-  background-color: #007bff;
+  background-color: #007acc;
   color: white;
   border: none;
-  margin-top: 15px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #005f99;
 }
 
-/* LISTAS */
 ul {
   list-style: none;
-  margin-top: 15px;
+  padding: 0;
 }
 
 ul li {
-  padding: 10px;
-  background-color: #eaf0f7;
-  border: 1px solid #d0dae5;
-  border-radius: 8px;
-  margin-bottom: 8px;
+  margin: 8px 0;
+  padding: 8px;
+  background-color: #eaf2fb;
+  border-radius: 4px;
 }
 
-/* ESTILO PARA CUADRICULAS DE FORMULARIOS */
+.nav {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.nav button {
+  margin: 0 5px;
+}
+
+.seccion {
+  display: none;
+}
+
+.seccion.activa {
+  display: block;
+}
+
 .grid-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
   margin-top: 10px;
 }
 
-/* LABELS (por si se agregan) */
-label {
-  font-weight: 600;
-  display: block;
+#mensaje-asignacion, #mensaje-ingreso {
   margin-top: 10px;
-  color: #333;
+  color: green;
+  font-weight: bold;
 }
