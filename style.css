@@ -1,71 +1,94 @@
-/* Estilo base */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* RESET BÁSICO */
+* {
+  box-sizing: border-box;
   margin: 0;
-  padding: 20px;
-  background-color: #f8f9fa;
-  color: #333;
+  padding: 0;
 }
 
-/* Encabezados */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f4f8;
+  color: #333;
+  padding: 20px;
+  line-height: 1.6;
+}
+
 h1, h2 {
-  color: #1d3557;
+  color: #004080;
   margin-bottom: 10px;
 }
 
-/* Tablas */
-table {
-  width: 100%;
-  border-collapse: collapse;
+hr {
+  margin: 30px 0;
+  border: 1px solid #ccc;
+}
+
+section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+/* FORMULARIOS */
+form {
   margin-top: 10px;
 }
 
-th {
-  background-color: #457b9d;
-  color: white;
+input, select, button {
   padding: 10px;
-  text-align: left;
-}
-
-td, th {
-  border: 1px solid #dee2e6;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #f1f1f1;
-}
-
-/* Formularios */
-form {
-  margin-top: 20px;
-  background-color: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  max-width: 600px;
-}
-
-input, select {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  margin-bottom: 15px;
+  margin-top: 8px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
 }
 
-/* Botones */
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 button {
-  background-color: #1d3557;
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 16px;
-  border-radius: 5px;
+  margin-top: 15px;
   cursor: pointer;
-  font-weight: bold;
+  transition: background-color 0.2s ease;
 }
 
 button:hover {
-  background-color: #0c2542;
+  background-color: #0056b3;
+}
+
+/* LISTAS */
+ul {
+  list-style: none;
+  margin-top: 15px;
+}
+
+ul li {
+  padding: 10px;
+  background-color: #eaf0f7;
+  border: 1px solid #d0dae5;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+/* ESTILO PARA CUADRICULAS DE FORMULARIOS */
+.grid-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* LABELS (por si se agregan) */
+label {
+  font-weight: 600;
+  display: block;
+  margin-top: 10px;
+  color: #333;
 }

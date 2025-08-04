@@ -3,60 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gestión Coraza</title>
+  <title>Gestión de Dotación - Coraza</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Gestión de Asociados</h1>
+  <h1>Gestión de Dotación - CORAZA</h1>
 
-  <form id="asociado-form">
-    <input type="text" id="cedula" name="cedula" placeholder="Cédula" required />
-    <input type="text" id="nombres" name="nombres" placeholder="Nombres" required />
-    <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required />
-    <input type="date" id="fecha_ingreso" name="fecha_ingreso" placeholder="Fecha de ingreso" />
-    <button type="submit">Guardar Asociado</button>
-  </form>
-
-  <h2>Lista de Asociados</h2>
-  <ul id="lista-asociados"></ul>
+  <section>
+    <h2>1. Ingreso de Dotación a Bodega</h2>
+    <form id="form-ingreso-dotacion">
+      <div id="campos-dotacion" class="grid-form"></div>
+      <button type="submit">Registrar ingreso a bodega</button>
+    </form>
+  </section>
 
   <hr/>
 
-  <h1>Gestión de Inventario</h1>
-
-  <form id="inventario-form">
-    <input type="hidden" id="inv-id" />
-    <input type="text" id="inv-tipo" placeholder="Tipo de producto" required />
-    <input type="text" id="inv-descripcion" placeholder="Descripción" required />
-    <input type="text" id="inv-estado" placeholder="Estado (ej: disponible, agotado)" required />
-    <button type="submit">Guardar Producto</button>
-  </form>
-
-  <h2>Lista de Inventario</h2>
-  <ul id="lista-inventario"></ul>
+  <section>
+    <h2>2. Estado Actual de Inventario</h2>
+    <ul id="lista-inventario"></ul>
+  </section>
 
   <hr/>
 
-  <h1>Asignar Dotación</h1>
+  <section>
+    <h2>3. Asignar Dotación a Asociado</h2>
+    <form id="form-asignar-dotacion">
+      <label>Asociado</label>
+      <select id="asociado-dotacion" required></select>
 
-  <form id="asignacion-form">
-    <select id="asociado-select" name="asociado" required>
-      <option value="">Seleccione un asociado</option>
-    </select>
+      <label>Fecha de asignación</label>
+      <input type="date" id="fecha-asignacion" required />
 
-    <select id="producto-select" name="producto" required>
-      <option value="">Seleccione un producto</option>
-    </select>
+      <div id="campos-asignar-dotacion" class="grid-form"></div>
 
-    <input type="number" id="cantidad-asignada" name="cantidad" placeholder="Cantidad" required min="1" />
-    <input type="date" id="fecha-asignacion" name="fecha" required />
-    <button type="submit">Asignar Dotación</button>
-  </form>
+      <button type="submit">Asignar dotación</button>
+    </form>
+  </section>
 
-  <div id="mensaje-asignacion" style="margin-top: 10px; color: green;"></div>
+  <hr/>
 
-  <h2>Historial de Asignaciones</h2>
-  <ul id="lista-asignaciones"></ul>
+  <section>
+    <h2>4. Historial de Entregas</h2>
+    <ul id="lista-historial"></ul>
+  </section>
 
   <script src="main.js"></script>
 </body>

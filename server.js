@@ -7,7 +7,8 @@ const db = require('./db');
 // Importar rutas
 const asociadosRoutes = require('./routes/asociados');
 const inventarioRoutes = require('./routes/inventario');
-const asignacionesRoutes = require('./routes/asignaciones'); // 👈 Nueva ruta
+const asignacionesRoutes = require('./routes/asignaciones');
+const entregasRoutes = require('./routes/entregas'); // ✅ NUEVA RUTA AGREGADA
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,7 +24,8 @@ app.get('/', (req, res) => {
 // Rutas API
 app.use('/api/asociados', asociadosRoutes);
 app.use('/api/inventario', inventarioRoutes);
-app.use('/api/asignaciones', asignacionesRoutes); // 👈 Usar la nueva ruta
+app.use('/api/asignaciones', asignacionesRoutes);
+app.use('/api/entregas', entregasRoutes); // ✅ NUEVA RUTA MONTADA
 
 // Iniciar servidor
 app.listen(PORT, () => {
