@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coraza - Gestión de Dotación</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Coraza Seguridad C.T.A.</h1>
+    <nav>
+      <button onclick="mostrarSeccion('asociados')">Asociados</button>
+      <button onclick="mostrarSeccion('inventario')">Inventario</button>
+      <button onclick="mostrarSeccion('entrega')">Entrega Dotación</button>
+      <button onclick="mostrarSeccion('historial')">Historial</button>
+      <button onclick="mostrarSeccion('ingreso')">Ingreso de Dotación</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Asociados -->
+    <section id="asociados" class="seccion">
+      <h2>Registro de Asociados</h2>
+      <form id="formAsociado">
+        <input type="text" id="cedula" placeholder="Cédula" required />
+        <input type="text" id="nombre" placeholder="Nombre completo" required />
+        <input type="text" id="cargo" placeholder="Cargo" required />
+        <input type="text" id="empresa" placeholder="Empresa" required />
+        <button type="submit">Guardar</button>
+      </form>
+      <div id="listaAsociados"></div>
+    </section>
+
+    <!-- Inventario -->
+    <section id="inventario" class="seccion" style="display:none;">
+      <h2>Inventario Actual</h2>
+      <div id="tablaInventario"></div>
+    </section>
+
+    <!-- Entrega Dotación -->
+    <section id="entrega" class="seccion" style="display:none;">
+      <h2>Asignar Dotación</h2>
+      <form id="formEntrega">
+        <input type="text" id="cedulaEntrega" placeholder="Cédula del asociado" required />
+        <div id="itemsDotacionEntrega"></div>
+        <button type="submit">Asignar</button>
+      </form>
+    </section>
+
+    <!-- Historial -->
+    <section id="historial" class="seccion" style="display:none;">
+      <h2>Historial de Entregas</h2>
+      <input type="text" id="cedulaHistorial" placeholder="Cédula del asociado" />
+      <button onclick="cargarHistorial()">Buscar</button>
+      <div id="resultadoHistorial"></div>
+    </section>
+
+    <!-- Ingreso de Dotación -->
+    <section id="ingreso" class="seccion" style="display:none;">
+      <h2>Ingreso de Dotación a Bodega</h2>
+      <form id="formIngreso">
+        <div id="itemsDotacionIngreso"></div>
+        <button type="submit">Guardar Ingreso</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
