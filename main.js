@@ -100,7 +100,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // CORREGIDO: ingreso-form, no ingreso-bodega-form
   const ingresoForm = document.getElementById('ingreso-form');
   if (ingresoForm) {
     ingresoForm.addEventListener('submit', async (e) => {
@@ -132,11 +131,24 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
+// ✅ FUNCIÓN ACTUALIZADA: Recarga datos automáticamente al cambiar de pestaña
 function mostrarSeccion(seccionId) {
   document.querySelectorAll('.seccion').forEach(seccion => {
     seccion.style.display = 'none';
   });
-  document.getElementById(`seccion-${seccionId}`).style.display = 'block';
+
+  const seccion = document.getElementById(`seccion-${seccionId}`);
+  if (seccion) {
+    seccion.style.display = 'block';
+
+    if (seccionId === 'inventario') {
+      cargarInventario();
+    } else if (seccionId === 'asociados') {
+      cargarAsociados();
+    } else if (seccionId === 'historial') {
+      cargarEntregas();
+    }
+  }
 }
 
 // ---------------------- FUNCIONES AUXILIARES ----------------------
