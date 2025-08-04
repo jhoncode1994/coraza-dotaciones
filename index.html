@@ -10,10 +10,10 @@
   <h1>Gestión de Asociados</h1>
 
   <form id="asociado-form">
-    <input type="text" id="cedula" placeholder="Cédula" required />
-    <input type="text" id="nombres" placeholder="Nombres" required />
-    <input type="text" id="apellidos" placeholder="Apellidos" required />
-    <input type="date" id="fecha_ingreso" placeholder="Fecha de ingreso" />
+    <input type="text" id="cedula" name="cedula" placeholder="Cédula" required />
+    <input type="text" id="nombres" name="nombres" placeholder="Nombres" required />
+    <input type="text" id="apellidos" name="apellidos" placeholder="Apellidos" required />
+    <input type="date" id="fecha_ingreso" name="fecha_ingreso" placeholder="Fecha de ingreso" />
     <button type="submit">Guardar Asociado</button>
   </form>
 
@@ -25,15 +25,38 @@
   <h1>Gestión de Inventario</h1>
 
   <form id="inventario-form">
-    <input type="text" id="nombre" placeholder="Nombre del producto" required />
-    <input type="text" id="descripcion" placeholder="Descripción" />
-    <input type="number" id="cantidad" placeholder="Cantidad" required min="0" />
-    <input type="text" id="ubicacion" placeholder="Ubicación" />
+    <input type="hidden" id="inv-id" />
+    <input type="text" id="inv-tipo" placeholder="Tipo de producto" required />
+    <input type="text" id="inv-descripcion" placeholder="Descripción" required />
+    <input type="text" id="inv-estado" placeholder="Estado (ej: disponible, agotado)" required />
     <button type="submit">Guardar Producto</button>
   </form>
 
   <h2>Lista de Inventario</h2>
   <ul id="lista-inventario"></ul>
+
+  <hr/>
+
+  <h1>Asignar Dotación</h1>
+
+  <form id="asignacion-form">
+    <select id="asociado-select" name="asociado" required>
+      <option value="">Seleccione un asociado</option>
+    </select>
+
+    <select id="producto-select" name="producto" required>
+      <option value="">Seleccione un producto</option>
+    </select>
+
+    <input type="number" id="cantidad-asignada" name="cantidad" placeholder="Cantidad" required min="1" />
+    <input type="date" id="fecha-asignacion" name="fecha" required />
+    <button type="submit">Asignar Dotación</button>
+  </form>
+
+  <div id="mensaje-asignacion" style="margin-top: 10px; color: green;"></div>
+
+  <h2>Historial de Asignaciones</h2>
+  <ul id="lista-asignaciones"></ul>
 
   <script src="main.js"></script>
 </body>

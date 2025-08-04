@@ -17,30 +17,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     const apellidos = document.getElementById('apellidos').value.trim();
     const fecha_ingreso = document.getElementById('fecha_ingreso').value || null;
 
-    if (!cedula || isNaN(cedula)) {
-      alert('Cédula inválida');
-      return;
-    }
-    if (!nombres || !apellidos) {
-      alert('Nombres y apellidos son obligatorios');
-      return;
-    }
+    if (!cedula || isNaN(cedula)) return alert('Cédula inválida');
+    if (!nombres || !apellidos) return alert('Nombres y apellidos son obligatorios');
 
     const asociado = { cedula, nombres, apellidos, fecha_ingreso };
     const metodo = asociadosGlobal.some(a => a.cedula === cedula) ? 'PUT' : 'POST';
     const url = metodo === 'PUT' ? `${apiAsociados}/${cedula}` : apiAsociados;
 
     try {
-      const response = await fetch(url, {
+      const res = await fetch(url, {
         method: metodo,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(asociado)
       });
-      if (!response.ok) throw new Error('Error al guardar asociado');
+      if (!res.ok) throw new Error('Error al guardar asociado');
       e.target.reset();
       await cargarAsociados();
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error('Error guardando asociado:', err);
     }
   });
 
@@ -54,8 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const id = document.getElementById('inv-id').value || null;
 
     if (!tipo || !descripcion || !estado) {
-      alert('Todos los campos de inventario son obligatorios');
-      return;
+      return alert('Todos los campos de inventario son obligatorios');
     }
 
     const inventario = { id, tipo, descripcion, estado };
@@ -63,52 +56,41 @@ document.addEventListener('DOMContentLoaded', async () => {
     const url = metodo === 'PUT' ? `${apiInventario}/${id}` : apiInventario;
 
     try {
-      const response = await fetch(url, {
+      const res = await fetch(url, {
         method: metodo,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(inventario)
       });
-      if (!response.ok) throw new Error('Error al guardar inventario');
+      if (!res.ok) throw new Error('Error al guardar inventario');
       e.target.reset();
-      document.getElementById('inv-id').value = ''; // Limpiar ID oculto
+      document.getElementById('inv-id').value = '';
       await cargarInventario();
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error('Error guardando inventario:', err);
     }
   });
 });
 
 async function cargarAsociados() {
   try {
-    const response = await fetch(apiAsociados);
-    const asociados = await response.json();
-    if (!Array.isArray(asociados)) throw new Error('Respuesta inválida');
-    asociadosGlobal = asociados;
+    const res = await fetch(apiAsociados);
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error('Respuesta inválida');
+    asociadosGlobal = data;
 
     const lista = document.getElementById('lista-asociados');
     lista.innerHTML = '';
-    asociados.forEach(a => {
-      const item = document.createElement('li');
-      item.innerHTML = `
+    data.forEach(a => {
+      const li = document.createElement('li');
+      li.innerHTML = `
         ${a.nombres} ${a.apellidos} (${a.cedula}) - Ingreso: ${a.fecha_ingreso || 'N/A'}
         <button onclick="editarAsociado('${a.cedula}')">🖊</button>
         <button onclick="eliminarAsociado('${a.cedula}')">🗑</button>
       `;
-      lista.appendChild(item);
+      lista.appendChild(li);
     });
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function eliminarAsociado(cedula) {
-  if (!confirm(`¿Eliminar asociado ${cedula}?`)) return;
-  try {
-    const res = await fetch(`${apiAsociados}/${cedula}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error('Error al eliminar asociado');
-    await cargarAsociados();
   } catch (err) {
-    console.error(err);
+    console.error('Error cargando asociados:', err);
   }
 }
 
@@ -121,16 +103,27 @@ function editarAsociado(cedula) {
   document.getElementById('fecha_ingreso').value = a.fecha_ingreso || '';
 }
 
+async function eliminarAsociado(cedula) {
+  if (!confirm(`¿Eliminar asociado ${cedula}?`)) return;
+  try {
+    const res = await fetch(`${apiAsociados}/${cedula}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Error al eliminar asociado');
+    await cargarAsociados();
+  } catch (err) {
+    console.error('Error eliminando asociado:', err);
+  }
+}
+
 async function cargarInventario() {
   try {
-    const response = await fetch(apiInventario);
-    const items = await response.json();
-    if (!Array.isArray(items)) throw new Error('Respuesta inválida');
-    inventarioGlobal = items;
+    const res = await fetch(apiInventario);
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error('Respuesta inválida');
+    inventarioGlobal = data;
 
     const lista = document.getElementById('lista-inventario');
     lista.innerHTML = '';
-    items.forEach(item => {
+    data.forEach(item => {
       const li = document.createElement('li');
       li.innerHTML = `
         ${item.tipo} - ${item.descripcion} (${item.estado})
@@ -139,19 +132,8 @@ async function cargarInventario() {
       `;
       lista.appendChild(li);
     });
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-async function eliminarInventario(id) {
-  if (!confirm(`¿Eliminar ítem con ID ${id}?`)) return;
-  try {
-    const res = await fetch(`${apiInventario}/${id}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error('Error al eliminar ítem');
-    await cargarInventario();
   } catch (err) {
-    console.error(err);
+    console.error('Error cargando inventario:', err);
   }
 }
 
@@ -162,4 +144,15 @@ function editarInventario(id) {
   document.getElementById('inv-tipo').value = item.tipo;
   document.getElementById('inv-descripcion').value = item.descripcion;
   document.getElementById('inv-estado').value = item.estado;
+}
+
+async function eliminarInventario(id) {
+  if (!confirm(`¿Eliminar ítem con ID ${id}?`)) return;
+  try {
+    const res = await fetch(`${apiInventario}/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Error al eliminar ítem');
+    await cargarInventario();
+  } catch (err) {
+    console.error('Error eliminando ítem:', err);
+  }
 }

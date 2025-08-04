@@ -4,11 +4,11 @@ const db = require('../db');
 
 // Ruta para asignar ítems a un asociado y descontar del inventario
 router.post('/', async (req, res) => {
-  const { cedula_asociado, id_inventario, cantidad } = req.body;
+  const { cedula_asociado, item_id, cantidad } = req.body;
 
   try {
     // 1. Verificar si hay suficiente inventario
-    const result = await db.query('SELECT cantidad FROM inventario WHERE id = $1', [id_inventario]);
+    const result = await db.query('SELECT cantidad FROM inventario WHERE id = $1', [item_id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Producto no encontrado en inventario.' });
@@ -22,14 +22,14 @@ router.post('/', async (req, res) => {
 
     // 2. Insertar la asignación
     await db.query(
-      'INSERT INTO asignaciones (cedula_asociado, id_inventario, cantidad) VALUES ($1, $2, $3)',
-      [cedula_asociado, id_inventario, cantidad]
+      'INSERT INTO asignaciones (cedula_asociado, item_id, cantidad) VALUES ($1, $2, $3)',
+      [cedula_asociado, item_id, cantidad]
     );
 
     // 3. Descontar del inventario
     await db.query(
       'UPDATE inventario SET cantidad = cantidad - $1 WHERE id = $2',
-      [cantidad, id_inventario]
+      [cantidad, item_id]
     );
 
     res.status(201).json({ message: 'Asignación registrada correctamente.' });
