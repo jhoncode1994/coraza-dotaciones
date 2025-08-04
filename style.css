@@ -1,27 +1,71 @@
+/* Estilo base */
 body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  color: #333;
 }
 
-h2 {
+/* Encabezados */
+h1, h2 {
   color: #1d3557;
+  margin-bottom: 10px;
 }
 
+/* Tablas */
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
 }
 
 th {
   background-color: #457b9d;
   color: white;
+  padding: 10px;
+  text-align: left;
 }
 
 td, th {
-  border: 1px solid #ddd;
+  border: 1px solid #dee2e6;
   padding: 8px;
 }
 
 tr:nth-child(even) {
   background-color: #f1f1f1;
+}
+
+/* Formularios */
+form {
+  margin-top: 20px;
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  max-width: 600px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Botones */
+button {
+  background-color: #1d3557;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #0c2542;
 }
