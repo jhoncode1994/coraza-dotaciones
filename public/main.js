@@ -1,184 +1,101 @@
-// URL del backend
-const apiInventario = 'https://coraza-api.onrender.com/api/inventario';
-
-// Función para mostrar una sección y ocultar las otras
-function mostrarSeccion(id) {
-  document.querySelectorAll('.seccion').forEach(seccion => {
-    seccion.classList.add('oculto');
-  });
-
-  document.getElementById(id).classList.remove('oculto');
-
-  // Si entramos a Inventario, cargamos la tabla
-  if (id === 'inventario') {
-    cargarInventario();
-  }
-}
-
-// Función para cargar y mostrar inventario actual
-async function cargarInventario() {
-  try {
-    const res = await fetch(apiInventario);
-    const inventario = await res.json();
-
-    const tabla = document.createElement('table');
-    const encabezado = document.createElement('tr');
-
-    encabezado.innerHTML = `
-      <th>Elemento</th>
-      <th>Cantidad</th>
-    `;
-    tabla.appendChild(encabezado);
-
-    for (const [elemento, cantidad] of Object.entries(inventario)) {
-      const fila = document.createElement('tr');
-      fila.innerHTML = `
-        <td>${formatearNombreElemento(elemento)}</td>
-        <td>${cantidad}</td>
-      `;
-      tabla.appendChild(fila);
-    }
-
-    const contenedor = document.getElementById('tablaInventario');
-    contenedor.innerHTML = ''; // Limpiar contenido anterior
-    contenedor.appendChild(tabla);
-  } catch (error) {
-    console.error('Error al cargar inventario:', error);
-  }
-}
-
-// Función para enviar nuevo ingreso de dotación
-document.getElementById('formIngresoDotacion').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const formData = new FormData(e.target);
-  const datos = {};
-
-  for (const [clave, valor] of formData.entries()) {
-    datos[clave] = parseInt(valor) || 0;
-  }
-
-  try {
-    const res = await fetch(apiInventario, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(datos),
-    });
-
-    if (res.ok) {
-      alert('Ingreso registrado exitosamente');
-      e.target.reset();
-      mostrarSeccion('inventario'); // Redirigir y actualizar inventario
-    } else {
-      const err = await res.text();
-      alert('Error al registrar ingreso: ' + err);
-    }
-  } catch (error) {
-    console.error('Error al enviar ingreso:', error);
-    alert('Error de conexión con el servidor');
-  }
-});
-
-// Utilidad para mostrar nombres más legibles
-function formatearNombreElemento(clave) {
-  const nombres = {
-    kepis: 'Kepis',
-    goleana: 'Goleana',
-    pantalon: 'Pantalón',
-    overol: 'Overol',
-    camisa: 'Camisa',
-    botas: 'Botas',
-    corbata: 'Corbata',
-    mona: 'Moña',
-    riata: 'Riata',
-    botasPantanera: 'Botas Pantanera'
-  };
-  return nombres[clave] || clave;
-}
-
-// Mostrar sección por defecto al cargar
-mostrarSeccion('asociados');
-
 const apiAsociados = 'https://coraza-api.onrender.com/api/asociados';
+const apiInventario = 'https://coraza-api.onrender.com/api/inventario';
 const apiEntregas = 'https://coraza-api.onrender.com/api/entregas';
 
-// Guardar nuevo asociado
+function mostrarSeccion(id) {
+  document.querySelectorAll('.seccion').forEach(sec => sec.classList.add('oculto'));
+  document.getElementById(id).classList.remove('oculto');
+}
+
+function mostrarNotificacion(mensaje, exito = true) {
+  const noti = document.getElementById('notificacion');
+  noti.textContent = mensaje;
+  noti.style.background = exito ? '#4caf50' : '#f44336';
+  noti.classList.remove('oculto');
+  setTimeout(() => {
+    noti.classList.add('oculto');
+  }, 3000);
+}
+
 document.getElementById('formAsociado').addEventListener('submit', async (e) => {
   e.preventDefault();
-
-  const cedula = document.getElementById('cedula').value.trim();
-  const nombre = document.getElementById('nombre').value.trim();
-  const cargo = document.getElementById('cargo').value.trim();
-  const turno = document.getElementById('turno').value.trim();
-
-  const nuevoAsociado = { cedula, nombre, cargo, turno };
+  const data = {
+    cedula: document.getElementById('cedula').value,
+    nombre: document.getElementById('nombre').value,
+    cargo: document.getElementById('cargo').value,
+    telefono: document.getElementById('telefono').value
+  };
 
   try {
     const res = await fetch(apiAsociados, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(nuevoAsociado)
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
     });
-
     if (res.ok) {
-      alert('Asociado guardado correctamente');
+      mostrarNotificacion('Asociado registrado correctamente.');
       e.target.reset();
-      cargarAsociados();
     } else {
-      const err = await res.text();
-      alert('Error al guardar: ' + err);
+      mostrarNotificacion('Error al registrar asociado.', false);
     }
-  } catch (err) {
-    console.error('Error al guardar asociado:', err);
-    alert('Error de conexión');
+  } catch {
+    mostrarNotificacion('Error de conexión al registrar.', false);
   }
 });
 
-// Cargar lista de asociados
-async function cargarAsociados() {
+document.getElementById('formInventario').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const items = Array.from(form.elements).filter(el => el.name);
+  const datos = items.reduce((acc, el) => {
+    acc[el.name] = parseInt(el.value) || 0;
+    return acc;
+  }, {});
+
   try {
-    const res = await fetch(apiAsociados);
-    const asociados = await res.json();
-
-    const contenedor = document.getElementById('listaAsociados');
-    contenedor.innerHTML = '';
-
-    if (asociados.length === 0) {
-      contenedor.innerHTML = '<p>No hay asociados registrados.</p>';
-      return;
-    }
-
-    const tabla = document.createElement('table');
-    const encabezado = document.createElement('tr');
-    encabezado.innerHTML = `
-      <th>Cédula</th>
-      <th>Nombre</th>
-      <th>Cargo</th>
-      <th>Turno</th>
-      <th>Acciones</th>
-    `;
-    tabla.appendChild(encabezado);
-
-    asociados.forEach(asociado => {
-      const fila = document.createElement('tr');
-      fila.innerHTML = `
-        <td>${asociado.cedula}</td>
-        <td>${asociado.nombre}</td>
-        <td>${asociado.cargo}</td>
-        <td>${asociado.turno}</td>
-        <td>
-          <button class="btn" onclick="mostrarFormularioEntrega('${asociado.cedula}', '${asociado.nombre}')">Asignar Dotación</button>
-          <button class="btn" onclick="verHistorial('${asociado.cedula}')">Historial</button>
-        </td>
-      `;
-      tabla.appendChild(fila);
+    const res = await fetch(apiInventario, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(datos)
     });
-
-    contenedor.appendChild(tabla);
-  } catch (err) {
-    console.error('Error al cargar asociados:', err);
+    if (res.ok) {
+      mostrarNotificacion('Ingreso al inventario registrado.');
+      form.reset();
+    } else {
+      mostrarNotificacion('Error al registrar inventario.', false);
+    }
+  } catch {
+    mostrarNotificacion('Error de conexión al registrar.', false);
   }
-}
+});
 
-// Cargar asociados cuando se entra a la pestaña
-document.querySelector("button[onclick=\"mostrarSeccion('asociados')\"]").addEventListener('click', cargarAsociados);
+document.getElementById('formEntrega').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const datos = {
+    cedula: document.getElementById('cedulaEntrega').value,
+    fecha: document.getElementById('fechaEntrega').value
+  };
+
+  Array.from(form.elements).forEach(el => {
+    if (el.name && el.type === 'number') {
+      datos[el.name] = parseInt(el.value) || 0;
+    }
+  });
+
+  try {
+    const res = await fetch(apiEntregas, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(datos)
+    });
+    if (res.ok) {
+      mostrarNotificacion('Dotación asignada correctamente.');
+      form.reset();
+    } else {
+      mostrarNotificacion('Error al asignar dotación.', false);
+    }
+  } catch {
+    mostrarNotificacion('Error de conexión al asignar.', false);
+  }
+});

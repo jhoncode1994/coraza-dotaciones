@@ -3,66 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Coraza - Gestión de Dotación</title>
+  <title>Gestión de Dotación - Coraza</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <h1>Coraza Seguridad C.T.A.</h1>
+    <h1>Coraza - Gestión de Dotación</h1>
     <nav>
       <button onclick="mostrarSeccion('asociados')">Asociados</button>
       <button onclick="mostrarSeccion('inventario')">Inventario</button>
-      <button onclick="mostrarSeccion('entrega')">Entrega Dotación</button>
-      <button onclick="mostrarSeccion('historial')">Historial</button>
       <button onclick="mostrarSeccion('ingreso')">Ingreso de Dotación</button>
+      <button onclick="mostrarSeccion('asignar')">Asignar Dotación</button>
+      <button onclick="mostrarSeccion('historial')">Historial</button>
     </nav>
   </header>
 
   <main>
     <!-- Asociados -->
-    <section id="asociados" class="seccion">
-      <h2>Registro de Asociados</h2>
+    <section id="asociados" class="seccion activa">
+      <h2>Registrar Asociado</h2>
       <form id="formAsociado">
-        <input type="text" id="cedula" placeholder="Cédula" required />
-        <input type="text" id="nombre" placeholder="Nombre completo" required />
-        <input type="text" id="cargo" placeholder="Cargo" required />
-        <input type="text" id="empresa" placeholder="Empresa" required />
-        <button type="submit">Guardar</button>
+        <input type="text" name="cedula" placeholder="Cédula" required />
+        <input type="text" name="nombre" placeholder="Nombre completo" required />
+        <input type="text" name="cargo" placeholder="Cargo" required />
+        <button type="submit">Guardar Asociado</button>
       </form>
       <div id="listaAsociados"></div>
     </section>
 
     <!-- Inventario -->
-    <section id="inventario" class="seccion" style="display:none;">
+    <section id="inventario" class="seccion">
       <h2>Inventario Actual</h2>
       <div id="tablaInventario"></div>
     </section>
 
-    <!-- Entrega Dotación -->
-    <section id="entrega" class="seccion" style="display:none;">
+    <!-- Ingreso de Dotación -->
+    <section id="ingreso" class="seccion">
+      <h2>Ingreso de Dotación a Bodega</h2>
+      <form id="formIngreso">
+        <div class="grid-form">
+          <label>Kepis: <input type="number" name="kepis" min="0" value="0" /></label>
+          <label>Goleana: <input type="number" name="goleana" min="0" value="0" /></label>
+          <label>Pantalón: <input type="number" name="pantalon" min="0" value="0" /></label>
+          <label>Overol: <input type="number" name="overol" min="0" value="0" /></label>
+          <label>Camisa: <input type="number" name="camisa" min="0" value="0" /></label>
+          <label>Botas: <input type="number" name="botas" min="0" value="0" /></label>
+          <label>Corbata: <input type="number" name="corbata" min="0" value="0" /></label>
+          <label>Moña: <input type="number" name="moña" min="0" value="0" /></label>
+          <label>Riata: <input type="number" name="riata" min="0" value="0" /></label>
+          <label>Botas Pantanera: <input type="number" name="botas_pantanera" min="0" value="0" /></label>
+        </div>
+        <button type="submit">Registrar Ingreso</button>
+      </form>
+    </section>
+
+    <!-- Asignar Dotación -->
+    <section id="asignar" class="seccion">
       <h2>Asignar Dotación</h2>
-      <form id="formEntrega">
-        <input type="text" id="cedulaEntrega" placeholder="Cédula del asociado" required />
-        <div id="itemsDotacionEntrega"></div>
-        <button type="submit">Asignar</button>
+      <form id="formAsignar">
+        <input type="text" name="cedula" placeholder="Cédula del Asociado" required />
+        <div class="grid-form">
+          <label>Kepis: <input type="number" name="kepis" min="0" value="0" /></label>
+          <label>Goleana: <input type="number" name="goleana" min="0" value="0" /></label>
+          <label>Pantalón: <input type="number" name="pantalon" min="0" value="0" /></label>
+          <label>Overol: <input type="number" name="overol" min="0" value="0" /></label>
+          <label>Camisa: <input type="number" name="camisa" min="0" value="0" /></label>
+          <label>Botas: <input type="number" name="botas" min="0" value="0" /></label>
+          <label>Corbata: <input type="number" name="corbata" min="0" value="0" /></label>
+          <label>Moña: <input type="number" name="moña" min="0" value="0" /></label>
+          <label>Riata: <input type="number" name="riata" min="0" value="0" /></label>
+          <label>Botas Pantanera: <input type="number" name="botas_pantanera" min="0" value="0" /></label>
+        </div>
+        <button type="submit">Asignar Dotación</button>
       </form>
     </section>
 
     <!-- Historial -->
-    <section id="historial" class="seccion" style="display:none;">
-      <h2>Historial de Entregas</h2>
-      <input type="text" id="cedulaHistorial" placeholder="Cédula del asociado" />
-      <button onclick="cargarHistorial()">Buscar</button>
-      <div id="resultadoHistorial"></div>
-    </section>
-
-    <!-- Ingreso de Dotación -->
-    <section id="ingreso" class="seccion" style="display:none;">
-      <h2>Ingreso de Dotación a Bodega</h2>
-      <form id="formIngreso">
-        <div id="itemsDotacionIngreso"></div>
-        <button type="submit">Guardar Ingreso</button>
-      </form>
+    <section id="historial" class="seccion">
+      <h2>Historial de Dotación por Asociado</h2>
+      <input type="text" id="cedulaHistorial" placeholder="Cédula del Asociado" />
+      <button onclick="verHistorial()">Ver Historial</button>
+      <div id="tablaHistorial"></div>
     </section>
   </main>
 
