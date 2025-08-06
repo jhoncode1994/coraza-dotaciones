@@ -6,7 +6,7 @@ const { Pool } = require('pg');
 const app = express();
 const port = 3000;
 
-// Conexión a PostgreSQL usando DATABASE_URL
+// 🔗 Conexión a PostgreSQL usando DATABASE_URL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -14,12 +14,12 @@ const pool = new Pool({
   }
 });
 
-// Middleware
+// 🛠️ Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public')); // Asegúrate de que HTML y JS estén en /public
 
-// Verificación de conexión
+// ✅ Verificación de conexión inicial
 pool.query('SELECT NOW()', (err, result) => {
   if (err) {
     console.error('❌ Error de conexión a la base de datos:', err);
@@ -28,7 +28,7 @@ pool.query('SELECT NOW()', (err, result) => {
   }
 });
 
-// Endpoint para registrar asociado
+// 📥 Endpoint para registrar o actualizar asociado
 app.post('/api/asociados', async (req, res) => {
   const { cedula, nombres, apellidos, zona, fecha_ingreso } = req.body;
 
@@ -50,28 +50,23 @@ app.post('/api/asociados', async (req, res) => {
 
     res.status(201).json({ mensaje: 'Asociado registrado correctamente' });
   } catch (err) {
-    console.error('Error en POST /api/asociados:', err);
+    console.error('❌ Error en POST /api/asociados:', err);
     res.status(500).json({ error: 'Error al registrar asociado' });
   }
 });
-// Verificación de conexión
-pool.query('SELECT NOW()', (err, result) => {
-  if (err) {
-    console.error('❌ Error de conexión a la base de datos:', err);
-  } else {
-    console.log('✅ Conexión exitosa. Hora actual en PostgreSQL:', result.rows[0].now);
-  }
-});
-app.get("/api/asociados", async (req, res) => {
+
+// 📤 Endpoint para obtener lista de asociados
+app.get('/api/asociados', async (req, res) => {
   try {
-    const resultado = await pool.query("SELECT * FROM asociados LIMIT 10");
+    const resultado = await pool.query('SELECT * FROM asociados LIMIT 10');
     res.status(200).json(resultado.rows);
   } catch (err) {
-    console.error("Error en GET /api/asociados:", err);
-    res.status(500).json({ error: "Error al obtener asociados" });
+    console.error('❌ Error en GET /api/asociados:', err);
+    res.status(500).json({ error: 'Error al obtener asociados' });
   }
 });
-// Iniciar servidor
+
+// 🚀 Iniciar servidor
 app.listen(port, () => {
   console.log(`🚀 Servidor escuchando en http://localhost:${port}`);
 });

@@ -1,39 +1,84 @@
-const apiAsociados = 'https://coraza-api.onrender.com/api/asociados';
+document.addEventListener('DOMContentLoaded', () => {
+  // Formulario de asociados
+  const formAsociado = document.getElementById('form-asociado');
 
-document.getElementById('form-asociado').addEventListener('submit', async function (e) {
-  e.preventDefault();
+  formAsociado.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  const cedula = document.getElementById('cedula').value;
-  const nombre = document.getElementById('nombre').value;
-  const apellido = document.getElementById('apellido').value;
-  const cargo = document.getElementById('cargo').value;
+    const cedula = document.getElementById('cedula').value.trim();
+    const nombres = document.getElementById('nombre').value.trim();
+    const apellidos = document.getElementById('apellido').value.trim();
+    const zona = document.getElementById('zona').value;
+    const fecha_ingreso = document.getElementById('fecha_ingreso').value;
 
-  const nuevoAsociado = {
-    cedula,
-    nombre,
-    apellido,
-    cargo
-  };
+    const nuevoAsociado = {
+      cedula,
+      nombres,
+      apellidos,
+      zona: zona ? parseInt(zona) : null,
+      fecha_ingreso: fecha_ingreso || null
+    };
 
-  try {
-    const res = await fetch(apiAsociados, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(nuevoAsociado)
-    });
+    try {
+      const response = await fetch('/api/asociados', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(nuevoAsociado)
+      });
 
-    const data = await res.json();
+      const resultado = await response.json();
 
-    if (res.ok) {
-      document.getElementById('mensaje').innerText = '✅ Asociado registrado correctamente';
-      document.getElementById('form-asociado').reset();
-    } else {
-      document.getElementById('mensaje').innerText = `❌ Error: ${data.error || 'No se pudo registrar el asociado.'}`;
+      if (response.ok) {
+        alert('✅ Asociado registrado correctamente');
+        formAsociado.reset();
+      } else {
+        alert(`⚠️ Error: ${resultado.error}`);
+      }
+    } catch (error) {
+      console.error('Error al enviar datos:', error);
+      alert('❌ Error de conexión con el servidor');
     }
-  } catch (error) {
-    document.getElementById('mensaje').innerText = '❌ Error al conectar con el servidor.';
-    console.error(error);
-  }
+  });
+
+  // Formulario de entregas
+  const formEntrega = document.getElementById('form-entrega');
+
+  formEntrega.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const elemento_id = parseInt(document.getElementById('elemento').value);
+    const usuario = document.getElementById('usuario').value.trim();
+    const cantidad = parseInt(document.getElementById('cantidad').value);
+
+    if (!elemento_id || !usuario || !cantidad || cantidad <= 0) {
+      alert('⚠️ Todos los campos son obligatorios y la cantidad debe ser mayor a cero.');
+      return;
+    }
+
+    const nuevaEntrega = { elemento_id, usuario, cantidad };
+
+    try {
+      const response = await fetch('/api/entregas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(nuevaEntrega)
+      });
+
+      const resultado = await response.json();
+
+      if (response.ok) {
+        alert('✅ Entrega registrada correctamente');
+        formEntrega.reset();
+      } else {
+        alert(`⚠️ Error: ${resultado.error}`);
+      }
+    } catch (error) {
+      console.error('Error al registrar entrega:', error);
+      alert('❌ Error de conexión con el servidor');
+    }
+  });
 });
