@@ -3,96 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sistema de Dotación - CORAZA</title>
+  <title>Registrar Asociado</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <h1>Registrar Asociado</h1>
 
-  <header>
-    <h1>Control de Dotación - CORAZA</h1>
-    <nav>
-      <button class="tab-btn" data-tab="asociados">Asociados</button>
-      <button class="tab-btn" data-tab="inventario">Inventario</button>
-      <button class="tab-btn" data-tab="entregas">Entregas</button>
-      <button class="tab-btn" data-tab="ingreso">Ingreso de Dotación</button>
-    </nav>
-  </header>
+  <form id="form-asociado">
+    <label for="cedula">Cédula:</label>
+    <input type="text" id="cedula" required />
 
-  <main>
-    <!-- Asociados -->
-    <section id="asociados" class="tab-content">
-      <h2>Registro de Asociados</h2>
-      <form id="form-asociado">
-        <input type="text" id="cedula" placeholder="Cédula" required />
-        <input type="text" id="nombre" placeholder="Nombre completo" required />
-        <input type="text" id="cargo" placeholder="Cargo" required />
-        <input type="text" id="zona" placeholder="Zona o Puesto" required />
-        <button type="submit">Guardar Asociado</button>
-      </form>
-      <h3>Listado de Asociados</h3>
-      <table id="tabla-asociados">
-        <thead>
-          <tr>
-            <th>Cédula</th>
-            <th>Nombre</th>
-            <th>Cargo</th>
-            <th>Zona</th>
-            <th>Opciones</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" required />
 
-    <!-- Inventario -->
-    <section id="inventario" class="tab-content hidden">
-      <h2>Inventario Actual</h2>
-      <table id="tabla-inventario">
-        <thead>
-          <tr>
-            <th>Elemento</th>
-            <th>Cantidad</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
+    <label for="apellido">Apellido:</label>
+    <input type="text" id="apellido" required />
 
-    <!-- Entregas -->
-    <section id="entregas" class="tab-content hidden">
-      <h2>Asignar Dotación</h2>
-      <form id="form-entrega">
-        <input type="text" id="cedula-entrega" placeholder="Cédula del asociado" required />
-        <div id="lista-entrega">
-          <!-- Se llenará dinámicamente con los elementos (kepis, camisa, botas, etc.) -->
-        </div>
-        <button type="submit">Registrar Entrega</button>
-      </form>
-      <h3>Historial de Entregas</h3>
-      <table id="tabla-entregas">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Asociado</th>
-            <th>Elemento</th>
-            <th>Cantidad</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
+    <label for="cargo">Cargo:</label>
+    <input type="text" id="cargo" required />
 
-    <!-- Ingreso de Dotación -->
-    <section id="ingreso" class="tab-content hidden">
-      <h2>Ingreso de Dotación a Bodega</h2>
-      <form id="form-ingreso">
-        <div id="lista-ingreso">
-          <!-- Se llenará dinámicamente con campos para cada ítem -->
-        </div>
-        <button type="submit">Registrar Ingreso</button>
-      </form>
-    </section>
-  </main>
+    <button type="submit">Registrar</button>
+  </form>
+
+  <div id="mensaje"></div>
 
   <script src="main.js"></script>
 </body>
