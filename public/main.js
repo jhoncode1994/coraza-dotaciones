@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const API_BASE = 'https://coraza-api.onrender.com';
+
   // Formulario de asociados
   const formAsociado = document.getElementById('form-asociado');
 
@@ -22,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('📤 Enviando datos:', nuevoAsociado);
 
     try {
-      const response = await fetch('/api/asociados', {
+      const response = await fetch(`${API_BASE}/api/asociados`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -30,13 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(nuevoAsociado)
       });
 
-      console.log('📦 Respuesta cruda:', response);
+      const clonedResponse = response.clone(); // Para evitar el error de doble lectura
+      console.log('📦 Respuesta cruda:', clonedResponse);
 
       let resultado;
       try {
         resultado = await response.json();
       } catch (jsonError) {
-        const rawText = await response.text();
+        const rawText = await clonedResponse.text();
         console.error('❌ No se pudo parsear JSON. Texto recibido:', rawText);
         alert('⚠️ El servidor respondió con un formato inesperado.');
         return;
@@ -74,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('📤 Enviando entrega:', nuevaEntrega);
 
     try {
-      const response = await fetch('/api/entregas', {
+      const response = await fetch(`${API_BASE}/api/entregas`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -82,13 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(nuevaEntrega)
       });
 
-      console.log('📦 Respuesta cruda:', response);
+      const clonedResponse = response.clone();
+      console.log('📦 Respuesta cruda:', clonedResponse);
 
       let resultado;
       try {
         resultado = await response.json();
       } catch (jsonError) {
-        const rawText = await response.text();
+        const rawText = await clonedResponse.text();
         console.error('❌ No se pudo parsear JSON. Texto recibido:', rawText);
         alert('⚠️ El servidor respondió con un formato inesperado.');
         return;
