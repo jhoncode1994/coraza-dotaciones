@@ -62,6 +62,15 @@ pool.query('SELECT NOW()', (err, result) => {
     console.log('✅ Conexión exitosa. Hora actual en PostgreSQL:', result.rows[0].now);
   }
 });
+app.get("/api/asociados", async (req, res) => {
+  try {
+    const resultado = await pool.query("SELECT * FROM asociados LIMIT 10");
+    res.status(200).json(resultado.rows);
+  } catch (err) {
+    console.error("Error en GET /api/asociados:", err);
+    res.status(500).json({ error: "Error al obtener asociados" });
+  }
+});
 // Iniciar servidor
 app.listen(port, () => {
   console.log(`🚀 Servidor escuchando en http://localhost:${port}`);
