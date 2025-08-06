@@ -32,6 +32,7 @@ pool.query('SELECT NOW()', (err, result) => {
 app.post('/api/asociados', async (req, res) => {
   const { cedula, nombres, apellidos, zona, fecha_ingreso } = req.body;
 
+  // Validación básica
   if (!cedula || !nombres || !apellidos) {
     return res.status(400).json({ error: 'Cédula, nombres y apellidos son obligatorios' });
   }
@@ -45,7 +46,7 @@ app.post('/api/asociados', async (req, res) => {
          apellidos = EXCLUDED.apellidos,
          zona = EXCLUDED.zona,
          fecha_ingreso = EXCLUDED.fecha_ingreso`,
-      [cedula, nombres, apellidos, zona, fecha_ingreso]
+      [cedula, nombres, apellidos, zona || null, fecha_ingreso || null]
     );
 
     res.status(201).json({ mensaje: 'Asociado registrado correctamente' });
@@ -64,6 +65,12 @@ app.get('/api/asociados', async (req, res) => {
     console.error('❌ Error en GET /api/asociados:', err);
     res.status(500).json({ error: 'Error al obtener asociados' });
   }
+});
+
+// 🛡️ Middleware global para errores inesperados
+app.use((err, req, res, next) => {
+  console.error('❌ Error inesperado:', err);
+  res.status(500).json({ error: 'Error interno del servidor' });
 });
 
 // 🚀 Iniciar servidor

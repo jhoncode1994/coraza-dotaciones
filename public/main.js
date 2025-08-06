@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
       fecha_ingreso: fecha_ingreso || null
     };
 
+    console.log('📤 Enviando datos:', nuevoAsociado);
+
     try {
       const response = await fetch('/api/asociados', {
         method: 'POST',
@@ -28,13 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(nuevoAsociado)
       });
 
-      const resultado = await response.json();
+      console.log('📦 Respuesta cruda:', response);
+
+      let resultado;
+      try {
+        resultado = await response.json();
+      } catch (jsonError) {
+        const rawText = await response.text();
+        console.error('❌ No se pudo parsear JSON. Texto recibido:', rawText);
+        alert('⚠️ El servidor respondió con un formato inesperado.');
+        return;
+      }
 
       if (response.ok) {
         alert('✅ Asociado registrado correctamente');
         formAsociado.reset();
       } else {
-        alert(`⚠️ Error: ${resultado.error}`);
+        alert(`⚠️ Error: ${resultado.error || 'Respuesta inesperada del servidor'}`);
       }
     } catch (error) {
       console.error('Error al enviar datos:', error);
@@ -59,6 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const nuevaEntrega = { elemento_id, usuario, cantidad };
 
+    console.log('📤 Enviando entrega:', nuevaEntrega);
+
     try {
       const response = await fetch('/api/entregas', {
         method: 'POST',
@@ -68,13 +82,23 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify(nuevaEntrega)
       });
 
-      const resultado = await response.json();
+      console.log('📦 Respuesta cruda:', response);
+
+      let resultado;
+      try {
+        resultado = await response.json();
+      } catch (jsonError) {
+        const rawText = await response.text();
+        console.error('❌ No se pudo parsear JSON. Texto recibido:', rawText);
+        alert('⚠️ El servidor respondió con un formato inesperado.');
+        return;
+      }
 
       if (response.ok) {
         alert('✅ Entrega registrada correctamente');
         formEntrega.reset();
       } else {
-        alert(`⚠️ Error: ${resultado.error}`);
+        alert(`⚠️ Error: ${resultado.error || 'Respuesta inesperada del servidor'}`);
       }
     } catch (error) {
       console.error('Error al registrar entrega:', error);
