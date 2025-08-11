@@ -1,36 +1,29 @@
-// server.js
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const db = require('./db'); // Importa la conexión a la base de datos
+const dotenv = require('dotenv');
+
+dotenv.config(); // Carga variables de entorno desde .env
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Middlewares
+app.use(cors()); // Habilita CORS para todas las rutas
+app.use(express.json()); // Permite recibir JSON en las peticiones
 
-// Ruta de prueba
-app.get('/', (req, res) => {
-  res.send('Servidor funcionando ✅');
-});
+// Rutas
+const inventarioRoutes = require('./routes/inventario');
+app.use('/api', inventarioRoutes);
 
-// Ruta para probar conexión a DB
-app.get('/test-db', async (req, res) => {
-  try {
-    const result = await db.query('SELECT NOW()');
-    res.json({
-      status: 'Conexión exitosa ✅',
-      serverTime: result.rows[0].now
-    });
-  } catch (err) {
-    console.error('Error al conectar con la DB ❌', err);
-    res.status(500).json({ error: 'Error al conectar con la DB' });
-  }
-});
+// Rutas asociados
+const asociadosRoutes = require('./routes/asociados');
+app.use('/api', asociadosRoutes);
+
+// Rutas entregas
+const entregasRoutes = require('./routes/entregas');
+app.use('/api', entregasRoutes);
 
 // Puerto
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT} 🚀`);
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
